@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -42,16 +43,20 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         }
 
+        MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory()).get(MainViewModel.class);
+        mainViewModel.getRestaurant().observe(this, this::setRestaurantData);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         binding.rvReview.setLayoutManager(layoutManager);
         DividerItemDecoration itemDecoration = new DividerItemDecoration(this, layoutManager.getOrientation());
         binding.rvReview.addItemDecoration(itemDecoration);
 
-        findRestaurant();
+        mainViewModel.getListReview().observe(this, this::setReviewData);
+        mainViewModel.isLoading().observe(this, this::showLoading);
 
         binding.btnSend.setOnClickListener(view -> {
             if (binding.edReview.getText() != null) {
-                postReview(binding.edReview.getText().toString());
+                mainViewModel.postReview(binding.edReview.getText().toString());
             }
 
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -59,60 +64,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void findRestaurant() {
-        showLoading(true);
-        Call<RestaurantResponse> client = ApiConfig.getApiService().getRestaurant(RESTAURANT_ID);
 
-        client.enqueue(new Callback<RestaurantResponse>() {
-            @Override
-            public void onResponse(Call<RestaurantResponse> call, Response<RestaurantResponse> response) {
-                showLoading(false);
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        setRestaurantData(response.body().getRestaurant());
-                        setReviewData(response.body().getRestaurant().getCustomerReviews());
-                    }
-                } else {
-                    if (response.body() != null) {
-                        Log.e(TAG, "onFailure: " + response.body().getMessage());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<RestaurantResponse> call, Throwable t) {
-                showLoading(false);
-                Log.e(TAG, "onFailure: " + t.getMessage());
-            }
-        });
-    }
-
-    private void postReview(String review) {
-        showLoading(true);
-        Call<PostReviewResponse> client = ApiConfig.getApiService().postReview(RESTAURANT_ID, "Dicoding", review);
-
-        client.enqueue(new Callback<PostReviewResponse>() {
-            @Override
-            public void onResponse(Call<PostReviewResponse> call, Response<PostReviewResponse> response) {
-                showLoading(false);
-                if (response.isSuccessful()) {
-                    if(response.body() != null) {
-                        setReviewData(response.body().getCustomerReviews());
-                    }
-                } else {
-                    if (response.body() != null) {
-                        Log.e(TAG, response.body().getMessage());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<PostReviewResponse> call, Throwable t) {
-                showLoading(false);
-                Log.e(TAG, "onFailure: " + t.getMessage());
-            }
-        });
-    }
 
     private void setRestaurantData(Restaurant restaurant) {
         binding.tvTitle.setText(restaurant.getName());
