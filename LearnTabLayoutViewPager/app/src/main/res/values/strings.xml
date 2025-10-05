@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Learn Tab Layout ViewPager2</string>
+
+    <string name="home_tab_text">Home</string>
+    <string name="content_tab_home">Welcome Home</string>
+    <string name="content_tab_profile">Change your Profile here</string>
+</resources>
