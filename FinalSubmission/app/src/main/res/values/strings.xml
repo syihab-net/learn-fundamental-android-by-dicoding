@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Dicoding Event</string>
+    <string name="title_upcoming">Upcoming</string>
+    <string name="title_finished">Finished</string>
+    <string name="rv_event_name">Dicoding eventItem name</string>
+    <string name="event_name">Lorem ipsum dolor sit, amet consectetur adipisicing elit.</string>
+    <string name="event_organizer">Event Organizer</string>
+    <string name="date_time">Date Time</string>
+    <string name="event_description">Event Description</string>
+    <string name="register">Daftar Sekarang</string>
+    <string name="no_events_available">Tidak ada event yang tersedia saat ini</string>
+    <string name="failed_to_fetch">Gagal memuat data event. Silahkan coba lagi.</string>
+    <string name="failed_to_fetch_detail">Gagal memuat detail event, silahkan coba lagi.</string>
+    <string name="image_cover">Image Cover</string>
+    <string name="label_upcoming_events">Upcoming Event</string>
+    <string name="label_finished_events">Finished Event</string>
+    <string name="label_favorite_events">Favorite Event</string>
+    <string name="available_quota">Available Quota</string>
+    <string name="title_favorite">Favorite</string>
+    <string name="title_setting">Setting</string>
+    <string name="favorite_icon">Favorite Icon</string>
+    <string name="setting">Setting</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="notification">Notification</string>
+    <string name="date_and_owner">Tanggal dan Owner</string>
+</resources>
